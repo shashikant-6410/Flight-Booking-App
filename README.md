@@ -2,96 +2,121 @@
 
 ## 📌 Overview
 
-This project is a **microservices-based backend system** for managing flight booking operations.
+Flight Booking App is a scalable **microservices-based backend system** designed to manage flight booking operations using modern backend engineering practices.
 
-It follows industry-standard backend practices including:
+The project focuses on building a modular and production-oriented architecture with secure API communication, centralized request handling, asynchronous workflows, and service-level separation of concerns.
+
+### Key Features
 
 - API Gateway Pattern
-- JWT-based Authentication
-- Rate Limiting
+- JWT-based Authentication & Authorization
+- RESTful API Architecture
+- Rate Limiting for API Protection
 - Centralized Error Handling
-- RESTful API Design
-- MVC Architecture (within each service)
+- RabbitMQ-based Asynchronous Communication
+- Email Notification System
+- MVC Architecture within Services
+- MySQL + Sequelize ORM Integration
 
-The **API Gateway acts as the single entry point** for all client requests and is responsible for authentication, authorization, and routing requests to internal services.
-
-The system is designed to be modular, scalable, and production-oriented.
-
----
-
-## 🏗 Architecture
-
-The application is divided into independent services communicating via HTTP REST APIs.
-
-### 🔹 Services
-
-#### 1️⃣ API Gateway
-- Entry point for all client requests
-- Handles JWT authentication & token validation
-- Implements route-level authorization
-- Applies rate limiting
-- Performs centralized error handling
-- Forwards validated requests to respective services
-
-#### 2️⃣ Flight Service
-- Manages flight data and availability
-- Handles flight CRUD operations
-- Uses Sequelize ORM with MySQL
-
-#### 3️⃣ Booking Service
-- Manages booking creation and ticket operations
-- Communicates with Flight Service for validation
-- Handles booking-related business logic
-
-#### 4️⃣ Notification Service (Planned)
-- Will handle booking confirmations and alerts
-- Designed as an independent service
-- Planned for email/SMS notifications
-- Will integrate asynchronously with Booking Service
+The **API Gateway** acts as the central entry point for all client requests and is responsible for authentication, request validation, route protection, and forwarding requests to internal services.
 
 ---
 
-## 🔄 Request Flow
+# 🏗 System Architecture
 
-1. Client sends request to **API Gateway**
-2. Gateway:
-   - Validates JWT token
-   - Applies rate limiting
-   - Checks route authorization
-3. Request is forwarded to the respective microservice
-4. Service processes request and returns response
-5. Gateway sends final response back to client
+The application follows a **microservices architecture** where services operate independently and communicate through HTTP-based REST APIs.
 
-### Example Routes
-  ```
-    /api/v1/flights/ → Flight Service
- ```
- ```
-    /api/v1/bookings/ → Booking Service
+## 🔹 Services
+
+### 1️⃣ API Gateway
+Responsible for centralized request management.
+
+#### Features
+- JWT authentication & token validation
+- Route-level authorization
+- Request forwarding
+- Rate limiting
+- Centralized error handling
+- Service routing
+
+---
+
+### 2️⃣ Flight Service
+Handles flight-related operations and data management.
+
+#### Responsibilities
+- Flight CRUD operations
+- Flight availability management
+- Database interaction using Sequelize ORM
+- MySQL integration
+
+---
+
+### 3️⃣ Booking Service
+Manages booking workflows and business logic.
+
+#### Responsibilities
+- Booking creation & management
+- Ticket processing
+- Flight validation through service communication
+- Booking-related business operations
+
+---
+
+### 4️⃣ Notification Service
+Handles asynchronous notification workflows.
+
+#### Features
+- RabbitMQ-based message queue integration
+- Email notification system using Nodemailer
+- Booking confirmation notifications
+- Decoupled asynchronous communication
+
+---
+
+# 🔄 Request Flow
+
+1. Client sends request to the **API Gateway**
+2. Gateway validates JWT token and applies middleware checks
+3. Request is forwarded to the appropriate service
+4. Service processes the request and performs database operations
+5. Notification Service handles asynchronous events when required
+6. Final response is returned to the client through the Gateway
+
+---
+
+## Example Routes
+
+```bash
+/api/v1/flights/*      → Flight Service
+/api/v1/bookings/*    → Booking Service
 ```
 
-
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
-### Backend
+## Backend
 - Node.js
 - Express.js
 
-### Database
+## Database
 - MySQL
 
-### ORM
-- Sequelize
+## ORM
+- Sequelize ORM
 
-### Authentication & Security
+## Authentication & Security
 - JWT (JSON Web Token)
-- Custom authentication middleware
+- Custom Authentication Middleware
 - Rate Limiting
-- Centralized error handling
+- Centralized Error Handling
 
-### Architecture & Design
+## Messaging & Notifications
+- RabbitMQ
+- Nodemailer
+
+## Architecture & Design
 - Microservices Architecture
 - API Gateway Pattern
 - MVC Pattern
@@ -99,60 +124,112 @@ The application is divided into independent services communicating via HTTP REST
 
 ---
 
-## 📂 Repository Structure
+# 📂 Repository Structure
 
-This repository provides the architecture overview and system coordination.
+This repository acts as the centralized architecture overview for the complete system.
 
-### 🔗 Individual Service Repositories
+## 🔗 Service Repositories
 
-- API Gateway → https://github.com/shashikant-6410/API-Gateway 
-- Flight Service → https://github.com/shashikant-6410/Flight-service 
-- Booking Service → https://github.com/shashikant-6410/Flight-Booking-Service 
-
-Each service:
-- Runs independently
-- Follows MVC structure
-- Exposes RESTful APIs
-- Communicates through HTTP-based service calls
+| Service | Repository |
+|---|---|
+| API Gateway | https://github.com/shashikant-6410/API-Gateway |
+| Flight Service | https://github.com/shashikant-6410/Flight-service |
+| Booking Service | https://github.com/shashikant-6410/Flight-Booking-Service |
+| Notification Service | https://github.com/shashikant-6410/Notification-service |
 
 ---
 
-## 🚀 Running the Project (Development)
+## Service Responsibilities
 
-1. Clone all service repositories  
-2. Install dependencies using:
+### API Gateway
+- Handles authentication and route protection
+- Applies rate limiting and middleware validation
+- Routes requests to internal services
+
+### Flight Service
+- Manages flight-related operations
+- Handles flight CRUD functionality
+- Maintains flight availability data
+
+### Booking Service
+- Processes booking operations
+- Handles booking workflows and validations
+- Communicates with Flight Service
+
+### Notification Service
+- Consumes asynchronous events using RabbitMQ
+- Sends booking confirmation emails using Nodemailer
+- Handles decoupled notification workflows
+
+---
+
+# 🚀 Running the Project
+
+## 1️⃣ Clone Repositories
+
+Clone all required service repositories locally.
+
+```bash
+git clone <repository-url>
 ```
-   npm install
+
+---
+
+## 2️⃣ Install Dependencies
+
+```bash
+npm install
 ```
 
-3. Start Flight and Booking services  
-4. Start API Gateway  
-5. Send all requests through the Gateway endpoints  
+---
+
+## 3️⃣ Start Services
+
+Start services individually:
+
+- Flight Service
+- Booking Service
+- Notification Service
+- API Gateway
 
 ---
 
-## 🔮 Future Enhancements
+## 4️⃣ Access APIs Through Gateway
 
-- Nginx for reverse proxy & load balancing
-- Docker containerization
-- Notification Service integration
-- API documentation using Swagger
-- Logging system (Winston)
-- Caching layer (Redis)
-- CI/CD pipeline integration
+All client requests should be routed through the API Gateway endpoints.
 
 ---
 
-## 🎯 Learning Focus
+# 🔮 Future Enhancements
 
-This project demonstrates:
-
-- Practical implementation of Microservices Architecture  
-- API Gateway-based authentication strategy  
-- Backend security best practices  
-- Modular and scalable backend design  
-- Production-oriented development mindset  
+- Nginx Reverse Proxy Integration
+- Docker-based Containerization
+- Redis Caching Layer
+- Swagger API Documentation
+- Winston Logging System
+- CI/CD Pipeline Integration
+- Service Discovery Mechanism
 
 ---
 
-⭐ This project reflects hands-on experience in designing secure and scalable backend systems using modern development practices.
+# 🎯 Learning Outcomes
+
+This project demonstrates practical understanding of:
+
+- Scalable Backend System Design
+- Microservices Architecture
+- API Gateway Pattern
+- Secure Authentication & Authorization
+- Asynchronous Communication
+- Modular Backend Development
+- Production-Oriented Backend Practices
+
+---
+
+# ⭐ Project Highlights
+
+- Designed modular backend services with clear separation of concerns
+- Implemented secure API access using JWT authentication
+- Integrated asynchronous notifications using RabbitMQ
+- Applied scalable backend architecture principles
+- Built production-oriented backend workflows using modern Node.js practices
