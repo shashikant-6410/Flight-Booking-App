@@ -183,6 +183,21 @@ npm install
 
 ---
 
+## ⚙️ RabbitMQ Setup
+
+The Notification Service depends on **RabbitMQ** for asynchronous communication between the Booking Service and Notification Service.
+
+Before starting the services, ensure RabbitMQ is installed and running locally or through Docker.
+
+### RabbitMQ is required for:
+- Booking event publishing
+- Queue-based communication
+- Email notification processing
+
+The Booking Service publishes events to RabbitMQ, and the Notification Service consumes those events to send booking confirmation emails using Nodemailer.
+
+Make sure the RabbitMQ server is active before running the Booking and Notification services.
+
 ## 3️⃣ Start Services
 
 Start services individually:
